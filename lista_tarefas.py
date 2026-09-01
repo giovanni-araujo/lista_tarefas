@@ -6,6 +6,9 @@ def main(pagina:ft.Page):
     pagina.window.height = 600
     pagina.title="Lista de Tarefas"
     pagina.horizontal_alignment = "center"
+    pagina.bgcolor = "#A6A9FF"
+    
+    
 
     titulo = ft.Text(value="Lista de Tarefas",
                      size=30)
@@ -14,12 +17,16 @@ def main(pagina:ft.Page):
 
     tarefa = ft.TextField(value="",
                           label="Adicione sua tarefa")
+
+    def excluir_tarefa(campo_tarefa):
+        lista_campo_tarefas.remove(campo_tarefa)
     
     def adicionar_tarefa():
-        lista_campo_tarefas.append(Campo_tarefa(texto_tarefa=tarefa.value))
+        lista_campo_tarefas.append(Campo_tarefa(texto_tarefa=tarefa.value,
+                                                funcao_excluir=excluir_tarefa))
         tarefa.value = ""
 
-
+  
     botao_adicionar_tarefa = ft.Button(content="Incluir",
                                        on_click=adicionar_tarefa)
 
