@@ -7,7 +7,8 @@ class Campo_tarefa(ft.Row):
 
         self.funcao_excluir = funcao_excluir
 
-        self.caixa_tarefa_fazer = ft.TextField(value=texto_tarefa)
+        self.caixa_tarefa_fazer = ft.TextField(value=texto_tarefa,
+                                               border_color="#000000")
     
         self.caixa_estado = ft.Text(value="Pendente")
         
@@ -25,7 +26,8 @@ class Campo_tarefa(ft.Row):
         self.caixa_excluir = ft.FloatingActionButton(icon=ft.Icons.DELETE,
                                                      mini=True,
                                                      on_click=lambda: self.funcao_excluir(self),
-                                                     bgcolor="#FFFFFF",
+                                                     bgcolor="#FFFFFF"
+                                                     
                                                      )
 
         self.caixa_editar = ft.FloatingActionButton(icon=ft.Icons.EDIT,
@@ -41,8 +43,7 @@ class Campo_tarefa(ft.Row):
 
         self.container_tudo = ft.Container(content=self.linha_tudo,
                                            border_radius=20,
-                                           bgcolor="#6C73C6"
-                                           )
+                                           bgcolor="#6C73C6")
 
         self.controls = [self.container_tudo]
 

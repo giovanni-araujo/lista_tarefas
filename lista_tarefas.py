@@ -1,8 +1,9 @@
 import flet as ft
-from component.classe_campo_tarefa import Campo_tarefa
+from classe_campo_tarefa import Campo_tarefa
 import sqlite3
 from database.conexao import conectar_bd
 from database.create_database import criar_bd
+from model import model_tarefa
 
 def main(pagina:ft.Page):
     pagina.window.width = 700
@@ -11,17 +12,8 @@ def main(pagina:ft.Page):
     pagina.horizontal_alignment = "center"
     pagina.bgcolor = "#A6A9FF"
     
-    #Criando a tabela de tarefas no banco de dados SQLITE3 
-    conexao, cursor = conectar_bd()
-    cursor.execute("""
-                    CREATE TABLE IF NOT EXISTS tarefas(
-                    cod_tarefa INTEGER PRIMARY KEY AUTOINCREMENT,
-                    tarefa TEXT,
-                    status TEXT);
-                    """)
-
-    conexao.commit() #Salvando as alterações
-    conexao.close() #Fechando a conexão
+    criar_bd()
+    
     
 
     titulo = ft.Text(value="Lista de Tarefas",
@@ -29,13 +21,24 @@ def main(pagina:ft.Page):
 
     lista_campo_tarefas = []
 
+
+        
+
     tarefa = ft.TextField(value="",
                           label="Adicione sua tarefa")
 
     def excluir_tarefa(campo_tarefa):
         lista_campo_tarefas.remove(campo_tarefa)
+        
+    #recuperando as tarefas do banco de dados
+    tarefas_bd = model_tarefa.recuperar_tarefas()
+    for tarefas in tarefas_bd:
+        lista_campo_tarefas.append(Campo_tarefa(texto_tarefa=tarefas["tarefa"],
+                                          funcao_excluir=excluir_tarefa))
     
     def adicionar_tarefa():
+        model_tarefa.inserir_tarefa(tarefa.value)
+
         lista_campo_tarefas.append(Campo_tarefa(texto_tarefa=tarefa.value,
                                                 funcao_excluir=excluir_tarefa))
 
@@ -45,7 +48,8 @@ def main(pagina:ft.Page):
         tarefa.value = ""
   
     botao_adicionar_tarefa = ft.Button(content="Incluir",
-                                       on_click=adicionar_tarefa)
+                                       on_click=adicionar_tarefa,
+                                       )
 
     coluna_tarefas = ft.Column(controls=lista_campo_tarefas,
                                )
