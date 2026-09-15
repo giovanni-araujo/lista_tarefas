@@ -1,6 +1,8 @@
 import flet as ft
 from component.classe_campo_tarefa import Campo_tarefa
 import sqlite3
+from database.conexao import conectar_bd
+from database.create_database import criar_bd
 
 def main(pagina:ft.Page):
     pagina.window.width = 700
@@ -9,9 +11,8 @@ def main(pagina:ft.Page):
     pagina.horizontal_alignment = "center"
     pagina.bgcolor = "#A6A9FF"
     
-    #Criando a tabela de tarefas no bancp de dados SQLITE3 
-    conexao = sqlite3.connect("bd_tarefas.sqlite") #conectando o banco de dados
-    cursor = conexao.cursor() #Criando cursor
+    #Criando a tabela de tarefas no banco de dados SQLITE3 
+    conexao, cursor = conectar_bd()
     cursor.execute("""
                     CREATE TABLE IF NOT EXISTS tarefas(
                     cod_tarefa INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,16 +39,8 @@ def main(pagina:ft.Page):
         lista_campo_tarefas.append(Campo_tarefa(texto_tarefa=tarefa.value,
                                                 funcao_excluir=excluir_tarefa))
 
-        #Incluindo na tabela tarefas
-        conexao = sqlite3.connect("bd_tarefas.sqlite")
-        cursor = conexao.cursor()
-        cursor.execute("""
-                        INSERT INTO tarefas (tarefa,status)
-                        VALUES (?,?);
-                        """,
-                        [tarefa.value, "PENDENTE"])
-        conexao.commit()
-        conexao.close()
+        
+        
 
         tarefa.value = ""
   
