@@ -2,8 +2,10 @@ import flet as ft
 
 
 class Campo_tarefa(ft.Row):
-    def __init__(self, texto_tarefa, funcao_excluir):
+    def __init__(self, texto_tarefa, funcao_excluir,cod_tarefa):
         super().__init__()
+
+        self.cod_tarefa = cod_tarefa
 
         self.funcao_excluir = funcao_excluir
 
